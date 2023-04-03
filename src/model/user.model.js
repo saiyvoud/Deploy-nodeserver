@@ -19,23 +19,9 @@ const userSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    facebookid: {
-      type: String,
-    },
-    googleid: {
-      type: String,
-    },
     profile: {
       type: String,
-    },
-    deviceToken: {
-      type: String,
-      default: "",
-    },
-    userType: {
-      type: String,
-      values: Object.values(EUserType),
-      defaultValue: EUserType.customer,
+      default: ""
     },
     is_Active: {
       type: Boolean,
@@ -61,12 +47,7 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
-// userSchema.method.comparePassword = function (loginPassword , cb){
-//   bcrypt.compare(loginPassword,this.password), (err,isMatch)=>{
-//       if(err) return cb(err)
-//       cb(null,isMatch)
-//   }
-// }
+
 
 const User = mongoose.model("user", userSchema);
 export default User;

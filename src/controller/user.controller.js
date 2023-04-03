@@ -1,3 +1,4 @@
+import UploadImage from "../config/cloudinary.js";
 import { Models } from "../model/index.js";
 import { EMessage, SMessage } from "../service/message.js";
 import {
@@ -41,7 +42,7 @@ export default class UserController {
         JSON.parse(JSON.stringify(user)),
         JSON.parse(JSON.stringify(token))
       );
-      SendSuccess(res, SMessage.Login, data);
+      return SendSuccess(res, SMessage.Login, data);
     } catch (error) {
       return SendError500(res, EMessage.LoginError);
     }
@@ -87,15 +88,32 @@ export default class UserController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.Please_input + validate.join(","));
       }
+      const image = await UploadImage(profile);
+      if (!image) {
+        return SendError400(res, "you must send file base64", image);
+      }
       const user = await Models.User.findByIdAndUpdate(id, {
         firstName,
         lastName,
-        profile,
+        profile: image,
       });
       return SendSuccess(res, "update user successful", user);
     } catch (error) {
       console.log("error update:", error);
       SendError400(res, "update user error", error);
+    }
+  }
+  static async deleteUser(req, res) {
+    try {
+      const id = req.params.id;
+      const user = await Models.User.findByIdAndUpdate(id, { is_Active: false });
+      if (!user) {
+        return SendError401(res, EMessage.Not_found_user);
+      }
+      SendSuccess(res, "Delete User Successful", user);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, "Error Delete User", error);
     }
   }
 }
