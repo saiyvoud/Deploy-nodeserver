@@ -11,7 +11,11 @@ export const ValidateRegister = (user) => {
 
   return ValidateData({ firstName, lastName, phoneNumber, password });
 };
+export const ValidateBanner = (banner) => {
+  const { name, detail,image } = banner;
 
+  return ValidateData({ name,detail,image });
+};
 export const ValidateUser = (user) => {
   const { firstName, lastName, profile } = user;
   return ValidateData({ firstName, lastName, profile });

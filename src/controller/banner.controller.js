@@ -1,12 +1,13 @@
-import UploadImage from "../config/cloudinary";
-import { Models } from "../model";
-import { EMessage } from "../service/message";
+import UploadImage from "../config/cloudinary.js";
+import { Models } from "../model/index.js";
+import { EMessage } from "../service/message.js";
+import { ValidateBanner } from "../service/validate.js";
 import {
   SendError400,
   SendError401,
   SendError500,
   SendSuccess,
-} from "../service/response";
+} from "../service/response.js";
 
 export class BannerController {
   static async insert(req, res) {
@@ -14,7 +15,7 @@ export class BannerController {
       const { name, detail, image } = req.body;
       const validate = ValidateBanner(req.body);
       if (validate.length > 0) {
-        return SendError400(res, EMessage.Please_input, validate.join(","));
+        return SendError400(res, EMessage.Please_input+ validate.join(","));
       }
       const imageUrl = await UploadImage(image);
       if (!imageUrl) {
@@ -33,17 +34,19 @@ export class BannerController {
   }
   static async updateBanner(req, res) {
     try {
-      const id = req.parms.id;
+      const id = req.params.id;
+      const bannerID = await Models.Banner.findOne({_id: id})
       const { name, detail, image } = req.body;
       const validate = ValidateBanner(req.body);
       if (validate.length > 0) {
-        SendError400(res, EMessage.Please_input, validate.join(","));
+       return SendError400(res, EMessage.Please_input + validate.join(","));
       }
-      const imageUrl = await UploadImage(image);
+      const imageUrl = await UploadImage(image,bannerID.image);
       if (!image) {
         SendError401(res, "Your Must Base64", imageUrl);
       }
-      const banner = await Models.Banner.findByIdAndUpdate(id, {
+      
+      const banner = await Models.Banner.findByIdAndUpdate(bannerID._id, {
         name,
         detail,
         image: imageUrl,
@@ -56,10 +59,10 @@ export class BannerController {
   }
   static async deleteBanner(req, res) {
     try {
-      const id = req.parms.id;
+      const id = req.params.id;
       const validate = await Models.Banner.findOne({_id: id})
-      if(validate){
-        SendError401(res,"Not Found Banner")
+       if(!validate){
+       return SendError401(res,"Not Found Banner")
       }
       const banner = await Models.Banner.findByIdAndUpdate(validate._id, {
         is_Active: false,
