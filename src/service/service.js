@@ -23,6 +23,7 @@ export const GenerateToken = (user) => {
 export const VerifyToken = (token)=>{
   return new Promise(async(resovle,reject)=>{
     try {
+      
       jwt.verify(token, `${SECRET_KEY}` , async (err,decode)=> {
         if(err) return reject(err);
         const user = Models.User.findOne({_id: decode._id})

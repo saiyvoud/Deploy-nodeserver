@@ -1,6 +1,8 @@
 import express from "express";
 import { BannerController } from "../controller/banner.controller.js";
+import PartsController from "../controller/parts.controller.js";
 import UserController from "../controller/user.controller.js";
+import { VehicleController } from "../controller/vehicle.controller.js";
 import { auth } from "../middleware/auth.js";
 const router = express.Router();
 // method http get post put delete 
@@ -13,4 +15,16 @@ router.put('/user/delete/:id',auth,UserController.deleteUser);
 router.post('/banner/insert',auth,BannerController.insert);
 router.put('/banner/update/:id',auth,BannerController.updateBanner);
 router.put('/banner/delete/:id',auth,BannerController.deleteBanner)
+// ------------ vehicle -----------
+router.post('/vehicle/insert',auth,VehicleController.insert);
+router.get('/vehicle/getOne/:id',auth,VehicleController.getVehicleOne);
+router.get('/vehicle/getAll',auth,VehicleController.getVehicleAll);
+router.put('/vehicle/update/:id',auth,VehicleController.updateVehicle);
+router.put('/vehicle/delete/:id',auth,VehicleController.deleteVehicle);
+// ------------- parts -------------
+router.post('/parts/insert', auth,PartsController.insert);
+router.get('/parts/getOne/:id', auth,PartsController.getOne);
+router.get('/parts/getAll', auth,PartsController.getAll);
+router.put('/parts/update/:id', auth,PartsController.updateParts);
+router.put('/parts/delete/:id', auth,PartsController.deletePart);
 export default router;

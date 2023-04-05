@@ -3,18 +3,23 @@ export const ValidateData = (data) => {
 };
 export const ValidateLogin = (user) => {
   const { phoneNumber, password } = user;
-
   return ValidateData({ phoneNumber, password });
 };
 export const ValidateRegister = (user) => {
   const { firstName, lastName, phoneNumber, password } = user;
-
   return ValidateData({ firstName, lastName, phoneNumber, password });
 };
 export const ValidateBanner = (banner) => {
-  const { name, detail,image } = banner;
-
-  return ValidateData({ name,detail,image });
+  const { name, detail, image } = banner;
+  return ValidateData({ name, detail, image });
+};
+export const ValidateParts = (parts) => {
+  const { vehicleId,name, detail,amount,price, image } = parts;
+  return ValidateData({ vehicleId,name,amount,price, detail, image });
+};
+export const ValidateVehicle = (vehicle) => {
+  const { vehicleType, name, image } = vehicle;
+  return ValidateData({ vehicleType, name, image });
 };
 export const ValidateUser = (user) => {
   const { firstName, lastName, profile } = user;

@@ -15,7 +15,7 @@ export class BannerController {
       const { name, detail, image } = req.body;
       const validate = ValidateBanner(req.body);
       if (validate.length > 0) {
-        return SendError400(res, EMessage.Please_input+ validate.join(","));
+         SendError400(res, EMessage.Please_input+ validate.join(","));
       }
       const imageUrl = await UploadImage(image);
       if (!imageUrl) {
@@ -39,7 +39,7 @@ export class BannerController {
       const { name, detail, image } = req.body;
       const validate = ValidateBanner(req.body);
       if (validate.length > 0) {
-       return SendError400(res, EMessage.Please_input + validate.join(","));
+        SendError400(res, EMessage.Please_input + validate.join(","));
       }
       const imageUrl = await UploadImage(image,bannerID.image);
       if (!image) {
@@ -62,7 +62,7 @@ export class BannerController {
       const id = req.params.id;
       const validate = await Models.Banner.findOne({_id: id})
        if(!validate){
-       return SendError401(res,"Not Found Banner")
+        SendError401(res,"Not Found Banner")
       }
       const banner = await Models.Banner.findByIdAndUpdate(validate._id, {
         is_Active: false,
