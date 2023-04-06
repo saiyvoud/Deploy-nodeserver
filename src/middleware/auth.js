@@ -4,7 +4,7 @@ import { VerifyToken } from "../service/service.js";
 
 export const auth = async (req, res, next) => {
   try {
-    const token = req.headers["token"];
+    const token = req.authorization;
     if (!token) return SendError400(res, EMessage.NotFoundToken);
     const user = await VerifyToken(token);
     if (!user) return SendError400(res, EMessage.InvaildToken);

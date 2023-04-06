@@ -10,6 +10,7 @@ import {
 } from "../service/response.js";
 
 export class BannerController {
+  
   static async insert(req, res) {
     try {
       const { name, detail, image } = req.body;

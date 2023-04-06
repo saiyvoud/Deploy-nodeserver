@@ -4,6 +4,8 @@ import PartsController from "../controller/parts.controller.js";
 import UserController from "../controller/user.controller.js";
 import { VehicleController } from "../controller/vehicle.controller.js";
 import { auth } from "../middleware/auth.js";
+import passport from "passport";
+const auths = passport.authenticate("jwt", {session: false})
 const router = express.Router();
 // method http get post put delete 
 // ---------- Auth -------------
@@ -24,7 +26,7 @@ router.put('/vehicle/delete/:id',auth,VehicleController.deleteVehicle);
 // ------------- parts -------------
 router.post('/parts/insert', auth,PartsController.insert);
 router.get('/parts/getOne/:id', auth,PartsController.getOne);
-router.get('/parts/getAll', auth,PartsController.getAll);
+router.get('/parts/getAll', auths,PartsController.getAll);
 router.put('/parts/update/:id', auth,PartsController.updateParts);
 router.put('/parts/delete/:id', auth,PartsController.deletePart);
 export default router;

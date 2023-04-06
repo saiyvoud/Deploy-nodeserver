@@ -1,5 +1,5 @@
 
-//es6 
+//es6  
 import express from 'express';
 import { PORT } from './config/globalKey.js';
 import cors from "cors"
@@ -8,7 +8,6 @@ import router from './router/index.js';
 import bodyParser from 'body-parser';
 const app = express();
 app.use(cors());
-
 app.use(bodyParser.json({extended: true,limit: '500mb' , parameterLimit: 500})),
 app.use(bodyParser.urlencoded({extended: true,limit: '500mb', parameterLimit: 500})),
 app.use('/api/v1', router)

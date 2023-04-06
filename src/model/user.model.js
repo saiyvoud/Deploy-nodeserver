@@ -4,7 +4,7 @@ import { EUserType } from "../service/message.js";
 const userSchema = mongoose.Schema(
   {
     firstName: {
-      type: String,
+      type: String, // bee 3 // sasfsdsd /... // 
       require: true,
     },
     lastName: {
@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      require: true,
+      require: true,  //10 /20
     },
     profile: {
       type: String,
