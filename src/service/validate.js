@@ -13,6 +13,14 @@ export const ValidateBanner = (banner) => {
   const { name, detail, image } = banner;
   return ValidateData({ name, detail, image });
 };
+export const ValidateOrder = (order) => {
+  const { userId,addressId,partsId, startTime,priceTotal } = order;
+  return ValidateData({ userId,addressId,partsId, startTime,priceTotal });
+};
+export const ValidateAddress = (address) => {
+  const { userId,village,district,province,latitude,longtitude, } = address;
+  return ValidateData({ userId,village,district,province,latitude,longtitude, });
+};
 export const ValidateParts = (parts) => {
   const { vehicleId,name, detail,amount,price, image } = parts;
   return ValidateData({ vehicleId,name,amount,price, detail, image });

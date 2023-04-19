@@ -74,4 +74,5 @@ export class BannerController {
       SendError500(res, "Error Delete Banner", error);
     }
   }
+  
 }

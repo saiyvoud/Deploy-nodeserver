@@ -9,12 +9,23 @@ export const GenerateToken = (user) => {
       let token = jwt.sign(
         {
           _id: user._id,
-          phoneNumber: user.phoneNumber,
+          phoneNumber: user.phoneNumber,r
         },
         `${SECRET_KEY}`,
         { expiresIn: "7d" }
       );
       resovle({ token });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+export const CheckPric = (price,priceTotal) => {
+  return new Promise(async (resovle, reject) => {
+    try {
+       if(price != priceTotal){
+       } 
+       resovle({isMatch: true});
     } catch (error) {
       reject(error);
     }

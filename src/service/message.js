@@ -18,3 +18,10 @@ export const EUserType = {
     admin : "admin",
     superAdmin : "superAdmin",
   }
+  export const Status = {
+    await: "await",
+    padding: "padding",
+    success: "success",
+    cancel: "cancel",
+    history: "history",
+  }
