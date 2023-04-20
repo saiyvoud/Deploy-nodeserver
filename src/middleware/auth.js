@@ -11,7 +11,7 @@ export const auth = async (req, res, next) => {
      res.locals._id = user._id;
     next();
   } catch (error) {
-    console.log(err);
+    console.log(error);
     SendError500(res, "Error", error);
   }
 };
