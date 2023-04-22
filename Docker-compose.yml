@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      URL_DATABASE_PRODUCT: mongodb+srv://MobileAppDB:8JDQx5nTT9e7XBit@cluster0.caspnqb.mongodb.net/
+      URL_DATABASE_DEV: mongodb://127.0.0.1:27017/ 
+      PORT: 3001
+      SECRET_KEY: MobileAppDB
+      CLOUDINARY_NAME: deeue1axx
+      CLOUDINARY_API_KEY: 642549686712727
+      CLOUDINARY_API_SECRET: 7qU_LPzWlJq36TYcgNtUzjn6NoA
+    restart: always  
+
+
+ 
