@@ -20,32 +20,32 @@ export const GenerateToken = (user) => {
     }
   });
 };
-export const CheckPric = (price,priceTotal) => {
+export const CheckPric = (price, priceTotal) => {
   return new Promise(async (resovle, reject) => {
     try {
-       if(price != priceTotal){
-       } 
-       resovle({isMatch: true});
+      if (price != priceTotal) {
+        return reject("Error PriceTotal is not Match");
+      }
+      resovle(true);
     } catch (error) {
       reject(error);
     }
   });
 };
-export const VerifyToken = (token)=>{
-  return new Promise(async(resovle,reject)=>{
+export const VerifyToken = (token) => {
+  return new Promise(async (resovle, reject) => {
     try {
-      
-      jwt.verify(token, `${SECRET_KEY}` , async (err,decode)=> {
-        if(err) return reject(err);
-        const user = Models.User.findOne({_id: decode._id})
-        resovle(user)
-      })
+      jwt.verify(token, `${SECRET_KEY}`, async (err, decode) => {
+        if (err) return reject(err);
+        const user = Models.User.findOne({ _id: decode._id });
+        resovle(user);
+      });
     } catch (error) {
       console.log(error);
       reject(error);
     }
-  })
-}
+  });
+};
 
 export const ComparePassword = (user, password) => {
   return new Promise(async (resovle, reject) => {

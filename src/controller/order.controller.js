@@ -29,10 +29,10 @@ export default class OrderController {
       if (!mongoose.Types.ObjectId.isValid(addressId)) {
         return SendError401(res, "Not Found AddressId");
       }
-      //   const isMatch = await CheckPric(parts.price, priceTotal);
-      //   if(!isMatch){
-      //     SendError400(res, "Not Match Price");
-      //   }
+        const isMatch = await CheckPric(parts.price, priceTotal);
+        if(!isMatch){
+          SendError400(res, "Not Match Price");
+        }
       const address = await Models.Address.findById(addressId);
 
       const order = await Models.Order.create({
