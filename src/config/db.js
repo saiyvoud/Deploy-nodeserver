@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import {   URL_DATABASE_PRODUCT } from "./globalKey.js";
+import {   URL_DATABASE_DEV, URL_DATABASE_PRODUCT } from "./globalKey.js";
 //atlas
 mongoose
-  .connect(URL_DATABASE_PRODUCT, { useNewUrlParser: true })
+  .connect(URL_DATABASE_DEV, { useNewUrlParser: true })
   .then(() => {
     console.log("Connected Database!");
   })

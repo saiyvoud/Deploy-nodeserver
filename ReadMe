@@ -1,0 +1,4 @@
+// create project
+// 1 create folder 2 npm init -y
+// package json npm install express cors mongoose body-parse
+// 

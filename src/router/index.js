@@ -12,6 +12,7 @@ const router = express.Router();
 // ---------- Auth -------------
 router.post("/user/login", UserController.login);
 router.post("/user/register", UserController.register);
+router.post("/user/refreshToken",auth, UserController.RefreshToken);
 router.put("/user/update/:id", auth, UserController.updateUser);
 router.put("/user/delete/:id", auth, UserController.deleteUser);
 // ------------ Banner -------------
