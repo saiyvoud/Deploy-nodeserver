@@ -3,6 +3,39 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Models } from "../model/index.js";
 
+export const VerifyRefreshToken = (token, refreshToken) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      jwt.verify(refreshToken, `${SECRET_KEY}`, async (err, decode) => {
+        if (err) return reject(err);
+        if (decode.token == token) {
+          const newToken = await GenerateToken(decode);
+          resolve(newToken);
+        } else {
+          reject("Invalid RefreshToken");
+        }
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const GenerateRefreshToken = (token, user) => {
+  return new Promise(async (resovle, reject) => {
+    try {
+      let refreshToken = jwt.sign(
+        { _id: user._id, phoneNumber: user.phoneNumber, token },
+        `${SECRET_KEY}`
+      );
+      refreshToken
+        ? resovle(refreshToken)
+        : reject("Error Generate RefreshToken");
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 export const GenerateToken = (user) => {
   return new Promise(async (resovle, reject) => {
     try {
@@ -14,12 +47,14 @@ export const GenerateToken = (user) => {
         `${SECRET_KEY}`,
         { expiresIn: "7d" }
       );
-      resovle({ token });
+      const refreshToken = await GenerateRefreshToken(token,user);
+      resovle({ token,refreshToken });
     } catch (error) {
       reject(error);
     }
   });
 };
+//
 export const CheckPric = (price, priceTotal) => {
   return new Promise(async (resovle, reject) => {
     try {

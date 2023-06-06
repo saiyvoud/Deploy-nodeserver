@@ -8,14 +8,35 @@ import {
   SendError500,
   SendSuccess,
 } from "../service/response.js";
-import { GenerateToken, ComparePassword } from "../service/service.js";
+import {
+  GenerateToken,
+  ComparePassword,
+  VerifyRefreshToken
+} from "../service/service.js";
 import {
   ValidateRegister,
   ValidateLogin,
   ValidateUser,
+  ValidateRefreshToken,
 } from "../service/validate.js";
 
 export default class UserController {
+  static async RefreshToken(req, res) {
+    try {
+      const validate = ValidateRefreshToken(req.body);
+      if (validate.length > 0) {
+        return SendError400(res, EMessage.Please_input + validate.join(","));
+      }
+      const { token, refreshToken } = req.body;
+      const data = await VerifyRefreshToken(token, refreshToken);
+      if (!data) {
+        return SendError400(res, "Error RefreshToken");
+      }
+      return SendSuccess(res, "RefreshToken Success", data);
+    } catch (error) {
+      return SendError500(res, "Error Server RefreshToken", error);
+    }
+  }
   static async login(req, res) {
     try {
       const { phoneNumber, password } = req.body;
