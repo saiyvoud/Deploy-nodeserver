@@ -8,15 +8,40 @@ import {
   SendError500,
   SendSuccess,
 } from "../service/response.js";
+import mongoose from "mongoose";
 
 export class BannerController {
-  
+  static async getOne(req, res) {
+    try {
+      const bannerId = req.params.bannerId;
+      if (!mongoose.Types.ObjectId.isValid(bannerId)) {
+        return SendError400(res, "Not Found Banner");
+      }
+      const banner = await Models.Banner.findOne({
+        is_Active: true,
+        _id: bannerId,
+      });
+      return SendSuccess(res, "Get One Succee", banner);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, "Error Get One Banner", error);
+    }
+  }
+  static async getAll(req, res) {
+    try {
+      const banner = await Models.Banner.find({ is_Active: true });
+      return SendSuccess(res, "Get All Succee", banner);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, "Error Get All Banner", error);
+    }
+  }
   static async insert(req, res) {
     try {
       const { name, detail, image } = req.body;
       const validate = ValidateBanner(req.body);
       if (validate.length > 0) {
-         SendError400(res, EMessage.Please_input+ validate.join(","));
+        SendError400(res, EMessage.Please_input + validate.join(","));
       }
       const imageUrl = await UploadImage(image);
       if (!imageUrl) {
@@ -36,17 +61,17 @@ export class BannerController {
   static async updateBanner(req, res) {
     try {
       const id = req.params.id;
-      const bannerID = await Models.Banner.findOne({_id: id})
+      const bannerID = await Models.Banner.findOne({ _id: id });
       const { name, detail, image } = req.body;
       const validate = ValidateBanner(req.body);
       if (validate.length > 0) {
         SendError400(res, EMessage.Please_input + validate.join(","));
       }
-      const imageUrl = await UploadImage(image,bannerID.image);
+      const imageUrl = await UploadImage(image, bannerID.image);
       if (!image) {
         SendError401(res, "Your Must Base64", imageUrl);
       }
-      
+
       const banner = await Models.Banner.findByIdAndUpdate(bannerID._id, {
         name,
         detail,
@@ -61,9 +86,9 @@ export class BannerController {
   static async deleteBanner(req, res) {
     try {
       const id = req.params.id;
-      const validate = await Models.Banner.findOne({_id: id})
-       if(!validate){
-        SendError401(res,"Not Found Banner")
+      const validate = await Models.Banner.findOne({ _id: id });
+      if (!validate) {
+        SendError401(res, "Not Found Banner");
       }
       const banner = await Models.Banner.findByIdAndUpdate(validate._id, {
         is_Active: false,
@@ -74,5 +99,4 @@ export class BannerController {
       SendError500(res, "Error Delete Banner", error);
     }
   }
-  
 }

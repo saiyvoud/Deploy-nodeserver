@@ -17,6 +17,8 @@ router.put("/user/update/:id", auth, UserController.updateUser);
 router.put("/user/delete/:id", auth, UserController.deleteUser);
 // ------------ Banner -------------
 router.post("/banner/insert", auth, BannerController.insert);
+router.get("/banner/getOne/:bannerId", auth, BannerController.getOne);
+router.get("/banner/getAll", auth, BannerController.getAll);
 router.put("/banner/update/:id", auth, BannerController.updateBanner);
 router.put("/banner/delete/:id", auth, BannerController.deleteBanner);
 // ------------ vehicle -----------
