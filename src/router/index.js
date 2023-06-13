@@ -30,6 +30,7 @@ router.put("/vehicle/delete/:id", auth, VehicleController.deleteVehicle);
 // ------------- parts -------------
 router.post("/parts/insert", auth, PartsController.insert);
 router.get("/parts/getOne/:id", auth, PartsController.getOne);
+router.get("/parts/getByVehicle/:vehicleId", auth, PartsController.getByVehicleId);
 router.get("/parts/getAll", auth, PartsController.getAll);
 router.put("/parts/update/:id", auth, PartsController.updateParts);
 router.put("/parts/delete/:id", auth, PartsController.deletePart);

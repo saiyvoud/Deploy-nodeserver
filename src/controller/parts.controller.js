@@ -61,6 +61,24 @@ export default class PartsController {
       SendError500(res, "Error Get One Parts");
     }
   }
+  static async getByVehicleId(req, res) {
+    try {
+      const vehicleId = req.params.vehicleId;
+      if (!mongoose.Types.ObjectId.isValid(vehicleId)) {
+        SendError401(res, "Error vehicleId Invalid");
+      }
+      const parts = await Models.Parts.find({
+        is_Active: true, vehicleId
+      });
+      if (!parts) {
+        SendError401(res, "Not Found Parts");
+      }
+      SendSuccess(res, "Get All Parts Successful", parts);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Get One Parts");
+    }
+  }
   static async getAll(req, res) {
     try {
       const parts = await Models.Parts.find({ is_Active: true })
