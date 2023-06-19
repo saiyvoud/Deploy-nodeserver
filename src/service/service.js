@@ -1,13 +1,14 @@
 import { SECRET_KEY } from "../config/globalKey.js";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { Models } from "../model/index.js";
-
 export const VerifyRefreshToken = (token, refreshToken) => {
   return new Promise(async (resolve, reject) => {
     try {
       jwt.verify(refreshToken, `${SECRET_KEY}`, async (err, decode) => {
         if (err) return reject(err);
+        console.log(`decode===>${decode.token}`);
+        console.log(`token===>${token}`);
         if (decode.token == token) {
           const newToken = await GenerateToken(decode);
           resolve(newToken);
@@ -47,8 +48,8 @@ export const GenerateToken = (user) => {
         `${SECRET_KEY}`,
         { expiresIn: "7d" }
       );
-      const refreshToken = await GenerateRefreshToken(token,user);
-      resovle({ token,refreshToken });
+      const refreshToken = await GenerateRefreshToken(token, user);
+      resovle({ token, refreshToken });
     } catch (error) {
       reject(error);
     }
