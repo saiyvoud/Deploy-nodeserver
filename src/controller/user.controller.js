@@ -11,7 +11,9 @@ import {
 import {
   GenerateToken,
   ComparePassword,
-  VerifyRefreshToken
+  VerifyRefreshToken,
+  GeneratePassword,
+  GenToken,
 } from "../service/service.js";
 import {
   ValidateRegister,
@@ -19,7 +21,8 @@ import {
   ValidateUser,
   ValidateRefreshToken,
 } from "../service/validate.js";
-
+import crypto from "crypto-js";
+import { SECRET_KEY } from "../config/globalKey.js";
 export default class UserController {
   static async RefreshToken(req, res) {
     try {
@@ -44,27 +47,50 @@ export default class UserController {
       if (validate.length > 0) {
         SendError404(res, EMessage.Please_input + validate.join(","));
       }
-
       const user = await Models.User.findOne({ phoneNumber });
-
       if (!user) {
         SendError401(
           res,
           EMessage.Not_found_user + "with phone number:" + phoneNumber
         );
       }
-
-      const isMatch = await ComparePassword(user, password);
-      if (!isMatch) {
-        SendError404(res, EMessage.invaildPhonumberOrPassword, isMatch);
-      }
-      const token = await GenerateToken(user);
-      const data = Object.assign(
-        JSON.parse(JSON.stringify(user)),
-        JSON.parse(JSON.stringify(token))
+      let passDecript = crypto.AES.decrypt(
+        user.password.toString(),
+        SECRET_KEY
       );
-      SendSuccess(res, SMessage.Login, data);
+      let decriptPass = passDecript.toString(crypto.enc.Utf8);
+      //console.log("Decript password: ", decriptPass);
+      if (!decriptPass) {
+        return SendError404(res, EMessage.LoginError);
+      }
+      decriptPass = decriptPass.replace(/"/g, "");
+      if (password === decriptPass) {
+        const updateVersionLogin = await Models.User.findOneAndUpdate(
+          { _id: user._id },
+          { login_version: user.login_version + 1 },
+          { new: true }
+        );
+        if (!updateVersionLogin) throw updateVersionLogin;
+        const encriptType = crypto.AES.encrypt(
+          JSON.stringify("USER_MANUAL"),
+          SECRET_KEY
+        ).toString();
+        const dataJWT = {
+          _id: user._id,
+          login_version: updateVersionLogin.login_version,
+          type: encriptType,
+        };
+        const token = await GenToken(dataJWT);
+        const result = Object.assign(
+          JSON.parse(JSON.stringify(user)),
+          JSON.parse(JSON.stringify(token))
+        );
+        return SendSuccess(res, SMessage.Login, result);
+      } else {
+        return SendError404(res, EMessage.LoginError);
+      }
     } catch (error) {
+      console.log(error);
       SendError500(res, EMessage.LoginError);
     }
   }
@@ -82,20 +108,42 @@ export default class UserController {
       if (checkExist) {
         return SendError401(res, SMessage.PhoneNumbered);
       }
+      // encrip password
+      const encriptPass = await GeneratePassword(password);
+      if (!encriptPass) {
+        return SendError400(res, "Error Generage Password");
+      }
+
       const newUser = new Models.User({
         firstName,
         lastName,
         phoneNumber,
-        password,
+        password: encriptPass,
       });
-      const users = await newUser.save();
-      const token = await GenerateToken(users);
+      const saveData = await newUser.save();
+      //
 
-      const data = Object.assign(
-        JSON.parse(JSON.stringify(users)),
+      if (!saveData) {
+        return SendError404(res, "Faild Register", saveData);
+      }
+      // encrip type
+      const encriptType = crypto.AES.encrypt(
+        JSON.stringify("USER_MANUAL"),
+        SECRET_KEY
+      ).toString();
+      //
+      const data = {
+        _id: saveData._id,
+        login_version: saveData.login_version,
+        type: encriptType,
+      };
+      //
+      const token = await GenToken(data);
+      const result = Object.assign(
+        JSON.parse(JSON.stringify(saveData)),
         JSON.parse(JSON.stringify(token))
       );
-      SendSuccess(res, SMessage.Register, data);
+      SendSuccess(res, SMessage.Register, result);
     } catch (error) {
       console.log(error);
       SendError500(res, EMessage.RegisterError, error);
