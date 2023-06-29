@@ -19,7 +19,6 @@ const addressSehcma = mongoose.Schema({
     },
     latitude: {
         type: String,
-        
     },
     longtitude: {
       type: String,

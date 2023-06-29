@@ -11,7 +11,7 @@ import { ValidateAddress } from "../service/validate.js";
 export default class AddressController {
   static async insert(req, res) {
     try {
-      const { userId, village, district, province, lattitude, longtitude } =
+      const { userId, village, district, province, latitude, longtitude } =
         req.body;
       const validate = ValidateAddress(req.body);
       if (validate.length > 0) {
@@ -25,7 +25,7 @@ export default class AddressController {
         village,
         district,
         province,
-        lattitude,
+        latitude,
         longtitude,
       });
       SendSuccess(res, "Insert Address Successful", address);
@@ -36,11 +36,27 @@ export default class AddressController {
   }
   static async getAll(req, res) {
     try {
-      const address = Models.Address.find({ is_Active: true });
+      const address = await Models.Address.find({ is_Active: true });
       SendSuccess(res, "Get All Address Successful", address);
     } catch (error) {
       console.log(error);
       SendError500(res, "Error Get All Address", error);
+    }
+  }
+  static async getByUser(req, res) {
+    try {
+      const userId = req.params.userId;
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        SendError400(res, "userId Invalid");
+      }
+      const address = await Models.Address.findOne({
+        is_Active: true,
+        userId: userId,
+      });
+      SendSuccess(res, "Get  Address Success", address);
+    } catch (error) {
+      console.log(error);
+      SendError500(res, "Error Get  Address", error);
     }
   }
 }
