@@ -6,8 +6,11 @@ import { VehicleController } from "../controller/vehicle.controller.js";
 import { auth } from "../middleware/auth.js";
 import AddressController from "../controller/address.controller.js";
 import OrderController from "../controller/order.controller.js";
+import passport from "passport";
 
 const router = express.Router();
+const authVerify = passport.authenticate("jwt");
+//const authVerify = passport.authenticate("jwt", { session: false });
 // method http get post put delete
 // ---------- Auth -------------
 router.post("/user/login", UserController.login);
@@ -16,7 +19,7 @@ router.post("/user/refreshToken",UserController.RefreshToken);
 router.put("/user/update/:id", auth, UserController.updateUser);
 router.put("/user/delete/:id", auth, UserController.deleteUser);
 // ------------ Banner -------------
-router.post("/banner/insert", auth, BannerController.insert);
+router.post("/banner/insert", authVerify, BannerController.insert);
 router.get("/banner/getOne/:bannerId", auth, BannerController.getOne);
 router.get("/banner/getAll", auth, BannerController.getAll);
 router.put("/banner/update/:id", auth, BannerController.updateBanner);

@@ -23,6 +23,7 @@ import {
 } from "../service/validate.js";
 import crypto from "crypto-js";
 import { SECRET_KEY } from "../config/globalKey.js";
+import { jwt } from "../config/jwt.js";
 export default class UserController {
   static async RefreshToken(req, res) {
     try {
@@ -80,7 +81,7 @@ export default class UserController {
           login_version: updateVersionLogin.login_version,
           type: encriptType,
         };
-        const token = await GenToken(dataJWT);
+        const token = await jwt(dataJWT);
         const result = Object.assign(
           JSON.parse(JSON.stringify(user)),
           JSON.parse(JSON.stringify(token))
@@ -138,7 +139,7 @@ export default class UserController {
         type: encriptType,
       };
       //
-      const token = await GenToken(data);
+      const token = await jwt(data);
       const result = Object.assign(
         JSON.parse(JSON.stringify(saveData)),
         JSON.parse(JSON.stringify(token))

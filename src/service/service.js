@@ -1,11 +1,39 @@
-import { SECRET_KEY,JWT_TIMEOUT,JWT_REFRECH_TIMEOUT } from "../config/globalKey.js";
-import jwt  from "jsonwebtoken";
+import {
+  SECRET_KEY,
+  JWT_TIMEOUT,
+  JWT_REFRECH_TIMEOUT,
+} from "../config/globalKey.js";
+import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Models } from "../model/index.js";
 import crypto from "crypto-js";
-
-export const GeneratePassword = (password)=>{
-  return new Promise(async(resolve,reject)=>{
+export const checkPermission = (data) => {
+  return new Promise(async (resolve, reject) => {
+    // --------- Decript type --------- //
+    try {
+      let typeDecript = crypto.AES.decrypt(data.type, SECRET_KEY);
+      let type = typeDecript.toString(crypto.enc.Utf8);
+      if (type) {
+        type = type.replace(/"/g, "");
+        let user = await Models.User.findOne({
+          $and: [
+            { _id: data.id },
+            { is_active: true },
+            { login_version: data.login_version },
+          ],
+        }).select("-password  -login_version -__v -created_at -updated_at");
+        if (!user) throw user;
+        user = JSON.parse(JSON.stringify(user));
+        user = Object.assign(user, { type: USER_MANUAL });
+        resolve(user);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+export const GeneratePassword = (password) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const encriptPass = crypto.AES.encrypt(
         JSON.stringify(password),
@@ -13,51 +41,55 @@ export const GeneratePassword = (password)=>{
       ).toString();
       resolve(encriptPass);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
-}
-export const GenToken = (data) =>{
-  return new Promise(async (resovle,reject)=>{
+  });
+};
+export const GenToken = (data) => {
+  return new Promise(async (resovle, reject) => {
     try {
-    // Create JWT Payload
-    const payload = {
-      id: data._id,
-      type: data.type,
-      login_version: data.login_version,
-    };
-   
-    var encryptID = crypto.AES.encrypt(
-      JSON.stringify(payload.id),
-      SECRET_KEY
-    ).toString();
-    
-    const payload_refress = {
-      id: encryptID,
-      type: data.type,
-      login_version: data.login_version,
-    };
- 
-    const jwtData = {
-      expiresIn: parseInt(JWT_TIMEOUT),
-    };
-    const jwtDataRefresh = {
-      expiresIn: parseInt(JWT_REFRECH_TIMEOUT),
-    };
-    //Generated JWT token with Payload and secret.
-    const token = jwt.sign(payload, SECRET_KEY, jwtData);
-    const refreshToken = jwt.sign(payload_refress, SECRET_KEY, jwtDataRefresh);
-    const resultData = {
-      token: token,
-      refreshToken: refreshToken,
-    };
-    // tokenList[refreshToken] = resultData;
-    resovle( resultData );
+      // Create JWT Payload
+      const payload = {
+        id: data._id,
+        type: data.type,
+        login_version: data.login_version,
+      };
+
+      var encryptID = crypto.AES.encrypt(
+        JSON.stringify(payload.id),
+        SECRET_KEY
+      ).toString();
+
+      const payload_refress = {
+        id: encryptID,
+        type: data.type,
+        login_version: data.login_version,
+      };
+
+      const jwtData = {
+        expiresIn: parseInt(JWT_TIMEOUT),
+      };
+      const jwtDataRefresh = {
+        expiresIn: parseInt(JWT_REFRECH_TIMEOUT),
+      };
+      //Generated JWT token with Payload and secret.
+      const token = jwt.sign(payload, SECRET_KEY, jwtData);
+      const refreshToken = jwt.sign(
+        payload_refress,
+        SECRET_KEY,
+        jwtDataRefresh
+      );
+      const resultData = {
+        token: token,
+        refreshToken: refreshToken,
+      };
+      // tokenList[refreshToken] = resultData;
+      resovle(resultData);
     } catch (error) {
-      reject(error)
+      reject(error);
     }
-  })
-}
+  });
+};
 export const VerifyRefreshToken = (token, refreshToken) => {
   return new Promise(async (resolve, reject) => {
     try {

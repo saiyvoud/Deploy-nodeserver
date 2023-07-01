@@ -9,6 +9,7 @@ import {
   SendSuccess,
 } from "../service/response.js";
 import mongoose from "mongoose";
+import { checkPermission } from "../service/service.js";
 
 export class BannerController {
   static async getOne(req, res) {
@@ -38,6 +39,8 @@ export class BannerController {
   }
   static async insert(req, res) {
     try {
+      // const result = await checkPermission(req.header.auth);
+      // if (!result) return SendError401(res,"Uanthorization");
       const { name, detail, image } = req.body;
       const validate = ValidateBanner(req.body);
       if (validate.length > 0) {
