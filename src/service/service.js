@@ -19,7 +19,7 @@ export const checkPermission = (data) => {
           $and: [
             { _id: data.id },
             { is_active: true },
-            { login_version: data.login_version },
+            //{ login_version: data.login_version },
           ],
         }).select("-password  -login_version -__v -created_at -updated_at");
         if (!user) throw user;

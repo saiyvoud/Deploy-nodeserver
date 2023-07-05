@@ -5,11 +5,16 @@ import { VerifyToken } from "../service/service.js";
 
 export const auth = async (req, res, next) => {
   try {
-    const token = req.headers['token'];
-    if (!token) return SendError400(res, EMessage.NotFoundToken);
-    const user = await VerifyToken(token);
-    if (!user) return SendError400(res, EMessage.InvaildToken);
-     res.locals._id = user._id;
+    const authorization = req.headers["authorization"];
+    
+    if (!authorization) return SendError400(res, "EMessage.invalidToken");
+    const token = authorization.replace("Bearer ", "");
+    console.log(token);
+    if (!token) return SendError400(res, EMessage.notFound + "token");
+    const decode = await VerifyToken(token);
+    console.log(decode);
+    // const _id = await Decrypt(decode);
+    // req.user = _id;
     next();
   } catch (error) {
     console.log(error);
