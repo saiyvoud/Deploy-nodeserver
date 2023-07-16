@@ -60,12 +60,12 @@ export default class UserController {
         SECRET_KEY
       );
       let decriptPass = passDecript.toString(crypto.enc.Utf8);
-      //console.log("Decript password: ", decriptPass);
       if (!decriptPass) {
         return SendError404(res, EMessage.LoginError);
       }
       decriptPass = decriptPass.replace(/"/g, "");
       if (password === decriptPass) {
+        
         const updateVersionLogin = await Models.User.findOneAndUpdate(
           { _id: user._id },
           { login_version: user.login_version + 1 },
@@ -76,8 +76,12 @@ export default class UserController {
           JSON.stringify("USER_MANUAL"),
           SECRET_KEY
         ).toString();
+        const encriptID = crypto.AES.encrypt(
+          JSON.stringify(user._id),
+          SECRET_KEY
+        ).toString();
         const dataJWT = {
-          _id: user._id,
+          _id: encriptID,
           login_version: updateVersionLogin.login_version,
           type: encriptType,
         };
@@ -133,8 +137,12 @@ export default class UserController {
         SECRET_KEY
       ).toString();
       //
+      const encriptID = crypto.AES.encrypt(
+        JSON.stringify(saveData._id),
+        SECRET_KEY
+      ).toString();
       const data = {
-        _id: saveData._id,
+        _id: encriptID,
         login_version: saveData.login_version,
         type: encriptType,
       };

@@ -12,9 +12,9 @@ export const auth = async (req, res, next) => {
     console.log(token);
     if (!token) return SendError400(res, EMessage.notFound + "token");
     const decode = await VerifyToken(token);
-    console.log(decode);
-    // const _id = await Decrypt(decode);
-    // req.user = _id;
+   // const _id = await Decrypt(decode);
+     req.user = decode._id;
+     console.log(req.user);
     next();
   } catch (error) {
     console.log(error);

@@ -41,11 +41,15 @@ export class BannerController {
     try {
       // const result = await checkPermission(req.header.auth);
       // if (!result) return SendError401(res,"Uanthorization");
-      const { name, detail, image } = req.body;
-      const validate = ValidateBanner(req.body);
-      if (validate.length > 0) {
-        SendError400(res, EMessage.Please_input + validate.join(","));
+      
+      // const validate = ValidateBanner(req.body);
+      // if (validate.length > 0) {
+      //   SendError400(res, EMessage.Please_input + validate.join(","));
+      // }
+      if (!req.body.files || Object.keys(req.body.files).length === 0){
+        return SendError400(res, "file is required");
       }
+      const { name, detail, image } = req.body;
       const imageUrl = await UploadImage(image);
       if (!imageUrl) {
         SendError400(res, "Your must base64", imageUrl);

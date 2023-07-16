@@ -10,7 +10,7 @@ export const ValidateRegister = (user) => {
   return ValidateData({ firstName, lastName, phoneNumber, password });
 };
 export const ValidateBanner = (banner) => {
-  const { name, detail, image } = banner;
+  const { name, detail } = banner;
   return ValidateData({ name, detail, image });
 };
 export const ValidateOrder = (order) => {

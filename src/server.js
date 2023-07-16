@@ -8,10 +8,16 @@ import router from './router/index.js';
 import bodyParser from 'body-parser';
 import passport from "passport";
 import configPassport from "./config/passport.js"
+import multer from 'multer';
+const upload = multer();
 const app = express();
 app.use(cors());
 app.use(bodyParser.json({extended: true,limit: '500mb' , parameterLimit: 500})),
 app.use(bodyParser.urlencoded({extended: true,limit: '500mb', parameterLimit: 500})),
+// for parsing multipart/form-data
+app.use(upload.array()); 
+app.use(express.static('public'));
+
 app.use('/api/v1', router)
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -31,6 +37,7 @@ app.use('/api/v1/test', (req,res)=>{
 })
 // Passport middleware
 app.use(passport.initialize());
+
 // Passport Config
 configPassport(passport)
 app.listen(PORT,()=>{

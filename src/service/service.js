@@ -161,8 +161,17 @@ export const VerifyToken = (token) => {
     try {
       jwt.verify(token, `${SECRET_KEY}`, async (err, decode) => {
         if (err) return reject(err);
-        const user = Models.User.findOne({ _id: decode._id });
-        resovle(user);
+        let passDecript = crypto.AES.decrypt(
+          decode.id.toString(),
+          SECRET_KEY
+        );
+        let decriptPass = passDecript.toString(crypto.enc.Utf8);
+        if (!decriptPass) {
+          return SendError404(res, EMessage.LoginError);
+        }
+        decriptPass = decriptPass.replace(/"/g, "");
+        const user = await Models.User.findOne({ _id: decriptPass});
+        resovle(user._id);
       });
     } catch (error) {
       console.log(error);
