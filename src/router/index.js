@@ -16,18 +16,18 @@ router.post("/user/refreshToken",UserController.RefreshToken);
 router.put("/user/update/:id", auth, UserController.updateUser);
 router.put("/user/delete/:id", auth, UserController.deleteUser);
 // ------------ Banner -------------
-router.post("/banner/insert", auth, BannerController.insert);
-router.get("/banner/getOne/:bannerId", auth, BannerController.getOne);
-router.get("/banner/getAll", auth, BannerController.getAll);
-router.put("/banner/update/:id", auth, BannerController.updateBanner);
-router.put("/banner/delete/:id", auth, BannerController.deleteBanner);
+router.post("/banner/insert",  BannerController.insert);
+router.get("/banner/getOne/:bannerId",  BannerController.getOne);
+router.get("/banner/getAll",  BannerController.getAll);
+router.put("/banner/update/:id",  BannerController.updateBanner);
+router.put("/banner/delete/:id",  BannerController.deleteBanner);
 // ------------ vehicle -----------
 const product = "/product"
-router.post(`${product}/insert`, auth, VehicleController.insert);
-router.get(`${product}/getOne/:id`, auth, VehicleController.getVehicleOne);
-router.get(`${product}/getAll`, auth, VehicleController.getVehicleAll);
-router.put(`${product}/update/:id`, auth, VehicleController.updateVehicle);
-router.put(`${product}/delete/:id`, auth, VehicleController.deleteVehicle);
+router.post(`${product}/insert`,  VehicleController.insert);
+router.get(`${product}/getOne/:id`,  VehicleController.getVehicleOne);
+router.get(`${product}/getAll`,  VehicleController.getVehicleAll);
+router.put(`${product}/update/:id`,  VehicleController.updateVehicle);
+router.put(`${product}/delete/:id`,  VehicleController.deleteVehicle);
 // ------------- parts -------------
 router.post("/parts/insert", auth, PartsController.insert);
 router.get("/parts/getOne/:id", auth, PartsController.getOne);
