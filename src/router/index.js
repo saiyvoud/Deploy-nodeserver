@@ -22,11 +22,12 @@ router.get("/banner/getAll", auth, BannerController.getAll);
 router.put("/banner/update/:id", auth, BannerController.updateBanner);
 router.put("/banner/delete/:id", auth, BannerController.deleteBanner);
 // ------------ vehicle -----------
-router.post("/vehicle/insert", auth, VehicleController.insert);
-router.get("/vehicle/getOne/:id", auth, VehicleController.getVehicleOne);
-router.get("/vehicle/getAll", auth, VehicleController.getVehicleAll);
-router.put("/vehicle/update/:id", auth, VehicleController.updateVehicle);
-router.put("/vehicle/delete/:id", auth, VehicleController.deleteVehicle);
+const product = "/product"
+router.post(`${product}/insert`, auth, VehicleController.insert);
+router.get(`${product}/getOne/:id`, auth, VehicleController.getVehicleOne);
+router.get(`${product}/getAll`, auth, VehicleController.getVehicleAll);
+router.put(`${product}/update/:id`, auth, VehicleController.updateVehicle);
+router.put(`${product}/delete/:id`, auth, VehicleController.deleteVehicle);
 // ------------- parts -------------
 router.post("/parts/insert", auth, PartsController.insert);
 router.get("/parts/getOne/:id", auth, PartsController.getOne);
