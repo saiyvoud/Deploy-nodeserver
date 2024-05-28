@@ -23,9 +23,9 @@ router.get("/banner/getAll", BannerController.getAll);
 router.put("/banner/update/:id", BannerController.updateBanner);
 router.put("/banner/delete/:id", BannerController.deleteBanner);
 // ------------ Category -------------
-router.post("/banner/insert", CategoryController.insert);
-router.get("/banner/getOne/:bannerId", CategoryController.getOne);
-router.get("/banner/getAll", CategoryController.getAll);
+router.post("/category/insert", CategoryController.insert);
+router.get("/category/getOne/:categoryId", CategoryController.getOne);
+router.get("/category/getAll", CategoryController.getAll);
 
 // ------------ vehicle -----------
 const product = "/product";
