@@ -4,6 +4,7 @@ import Vehicle from "./vehicle.model.js";
 import Parts from "./parts.model.js";
 import Address from "./address.model.js";
 import Order from "./order.model.js";
+import Category from "./category.model.js";
 export const Models = {
   User,
   Banner,
@@ -11,4 +12,5 @@ export const Models = {
   Parts,
   Address,
   Order,
+  Category,
 };
