@@ -35,7 +35,7 @@ export default class CategoryController {
   static async insert(req, res) {
     try {
       const { title } = req.body;
-      if (title) {
+      if (!title) {
         return SendError404(res, "title is required!");
       }
 
