@@ -30,8 +30,8 @@ export const ValidateVehicle = (vehicle) => {
   return ValidateData({ vehicleType, name, image });
 };
 export const ValidateProduct = (product) => {
-  const { category_id, name,detail,price,amount, image } = product;
-  return ValidateData({ category_id, name,detail,price,amount, image});
+  const { category_id, name,detail,price,amount } = product;
+  return ValidateData({ category_id, name,detail,price,amount});
 };
 export const ValidateUser = (user) => {
   const { firstName, lastName, profile } = user;

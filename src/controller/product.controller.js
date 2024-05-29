@@ -8,7 +8,7 @@ import {
   SendError500,
   SendSuccess,
 } from "../service/response.js";
-
+import mongoose from "mongoose";
 export class ProductController {
   static async insert(req, res) {
     try {
@@ -16,6 +16,9 @@ export class ProductController {
       const validate = ValidateProduct(req.body);
       if (validate.length > 0) {
         SendError400(res, EMessage.Please_input + validate.join(","));
+      }
+      if (!mongoose.Types.ObjectId.isValid(category_id)) {
+        return SendError400(res, "Not Found Category");
       }
       const imagePath = req.files;
       const imageUrl = await UploadImageFormData(imagePath.image.data);
