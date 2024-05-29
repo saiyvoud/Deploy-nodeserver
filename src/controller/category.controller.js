@@ -6,6 +6,7 @@ import {
   SendError500,
   SendError404,
 } from "../service/response.js";
+import mongoose from "mongoose";
 export default class CategoryController {
   static async getOne(req, res) {
     try {
