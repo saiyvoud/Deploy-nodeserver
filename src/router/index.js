@@ -7,6 +7,7 @@ import { auth } from "../middleware/auth.js";
 import AddressController from "../controller/address.controller.js";
 import OrderController from "../controller/order.controller.js";
 import CategoryController from "../controller/category.controller.js";
+import { ProductController } from "../controller/product.controller.js";
 
 const router = express.Router();
 // method http get post put delete
@@ -26,14 +27,21 @@ router.put("/banner/delete/:id", BannerController.deleteBanner);
 router.post("/category/insert", CategoryController.insert);
 router.get("/category/getOne/:categoryId", CategoryController.getOne);
 router.get("/category/getAll", CategoryController.getAll);
-
+router.delete("/category/delete/:id",CategoryController.deleteCategory)
 // ------------ vehicle -----------
+const vehicle = "/vehicle";
+router.post(`${vehicle}/insert`, VehicleController.insert);
+router.get(`${vehicle}/getOne/:id`, VehicleController.getVehicleOne);
+router.get(`${vehicle}/getAll`, VehicleController.getVehicleAll);
+router.put(`${vehicle}/update/:id`, VehicleController.updateVehicle);
+router.put(`${vehicle}/delete/:id`, VehicleController.deleteVehicle);
+//-------------- product ------------
 const product = "/product";
-router.post(`${product}/insert`, VehicleController.insert);
-router.get(`${product}/getOne/:id`, VehicleController.getVehicleOne);
-router.get(`${product}/getAll`, VehicleController.getVehicleAll);
-router.put(`${product}/update/:id`, VehicleController.updateVehicle);
-router.put(`${product}/delete/:id`, VehicleController.deleteVehicle);
+router.post(`${product}/insert`, ProductController.insert);
+router.get(`${product}/getOne/:id`, ProductController.getProductOne);
+router.get(`${product}/getAll`, ProductController.getProductAll);
+router.put(`${product}/update/:id`, ProductController.updateProduct);
+router.put(`${product}/delete/:id`, ProductController.deleteProduct);
 // ------------- parts -------------
 router.post("/parts/insert", auth, PartsController.insert);
 router.get("/parts/getOne/:id", auth, PartsController.getOne);

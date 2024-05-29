@@ -48,4 +48,20 @@ export default class CategoryController {
       SendError500(res, "Error Insert category", error);
     }
   }
+  static async deleteCategory(req, res) {
+    try {
+      const categoryId = req.params.categoryId;
+      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+        return SendError400(res, "Not Found category");
+      }
+
+      const category = await Models.Category.findByIdAndDelete({
+        _id: categoryId,
+      });
+      return SendSuccess(res, "Delete Succee", category);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, "Error Get One category", error);
+    }
+  }
 }
