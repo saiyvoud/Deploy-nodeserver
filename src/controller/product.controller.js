@@ -15,7 +15,7 @@ export class ProductController {
       const { category_id, name, detail, price, amount } = req.body;
       const validate = ValidateProduct(req.body);
       if (validate.length > 0) {
-        SendError400(res, EMessage.Please_input + validate.join(","));
+        return SendError400(res, EMessage.Please_input + validate.join(","));
       }
       if (!mongoose.Types.ObjectId.isValid(category_id)) {
         return SendError400(res, "Not Found Category");
@@ -23,25 +23,26 @@ export class ProductController {
       const imagePath = req.files;
       const imageUrl = await UploadImageFormData(imagePath.image.data);
       if (!imageUrl) {
-        SendError400(res, "Your Must File Base64");
+        return SendError400(res, "Your Must File Base64");
       }
       const product = await Models.Product.create({
-        category_id,
+        categoryId: category_id,
         name,
         detail,
         price,
         amount,
         image: imageUrl,
       });
-      SendSuccess(res, "Insert Product Successful", product);
+      return SendSuccess(res, "Insert Product Successful", product);
     } catch (error) {
       console.log(error);
-      SendError500(res, "Error Insert Product", error);
+      return SendError500(res, "Error Insert Product", error);
     }
   }
   static async getProductOne(req, res) {
     try {
       const id = req.params.id;
+
       const Product = await Models.Product.findOne({ _id: id });
       if (!Product) {
         SendError401(res, "Not Found Product", Product);
@@ -50,6 +51,21 @@ export class ProductController {
     } catch (error) {
       console.log(error);
       SendError500(res, "Error Get One Product", error);
+    }
+  }
+  static async getProductByCategory(req, res) {
+    try {
+
+      const categoryId = req.params.category_id;
+      if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+        return SendError400(res, "Not Found Category");
+      }
+      const product = await Models.Product.find({categoryId: categoryId})
+  
+      return SendSuccess(res, "Get Product Successful", product);
+    } catch (error) {
+      console.log(error);
+      return SendError500(res, "Error Get One Product", error);
     }
   }
   static async getProductAll(req, res) {
