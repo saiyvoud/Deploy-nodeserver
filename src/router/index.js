@@ -27,7 +27,7 @@ router.put("/banner/delete/:id", BannerController.deleteBanner);
 router.post("/category/insert", CategoryController.insert);
 router.get("/category/getOne/:categoryId", CategoryController.getOne);
 router.get("/category/getAll", CategoryController.getAll);
-router.delete("/category/delete/:id",CategoryController.deleteCategory)
+router.delete("/category/delete/:categortId",CategoryController.deleteCategory)
 // ------------ vehicle -----------
 const vehicle = "/vehicle";
 router.post(`${vehicle}/insert`, VehicleController.insert);
