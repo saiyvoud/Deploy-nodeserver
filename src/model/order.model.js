@@ -7,23 +7,26 @@ const orderSchema = mongoose.Schema(
       ref: "user",
       require: true,
     },
-    partsId: {
-      type: mongoose.Types.ObjectId,
-      ref: "parts",
-      require: true,
-    },
-    priceTotal: {
-      type: Number,
-      require: true,
-    },
+    products: [
+      {
+        productId: mongoose.Types.ObjectId,
+        amount: Number,
+        total: Number,
+      },
+    ],
     addressId: {
       type: mongoose.Types.ObjectId,
       ref: "address",
       require: true,
     },
-    startTime: {
-      type: String,
+    totalPrice: {
+      type: Number,
       require: true,
+    },
+    billQR: {
+      type: String,
+      default: "",
+
     },
     status: {
       type: String,

@@ -56,8 +56,9 @@ router.put("/parts/update/:id", auth, PartsController.updateParts);
 router.put("/parts/delete/:id", auth, PartsController.deletePart);
 // ------------- address ------------
 router.post("/address/insert", auth, AddressController.insert);
+router.put("/address/update/:addressId", auth, AddressController.updateAddress);
 router.get("/address/getAll", auth, AddressController.getAll);
-router.get("/address/getByUser/:userId", auth, AddressController.getByUser);
+router.get("/address/getByUser", auth, AddressController.getByUser);
 // ------------ order ------------
 router.post("/order/insert", auth, OrderController.insert);
 router.get("/order/getAll", auth, OrderController.getAll);

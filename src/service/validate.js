@@ -18,8 +18,8 @@ export const ValidateOrder = (order) => {
   return ValidateData({ userId,addressId,partsId, startTime,priceTotal });
 };
 export const ValidateAddress = (address) => {
-  const { userId,village,district,province,latitude,longtitude, } = address;
-  return ValidateData({ userId,village,district,province,latitude,longtitude, });
+  const { village,district,province,latitude,longitude,detail } = address;
+  return ValidateData({ village,district,province,latitude,longitude,detail });
 };
 export const ValidateParts = (parts) => {
   const { vehicleId,name, detail,amount,price, image } = parts;

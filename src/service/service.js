@@ -74,6 +74,7 @@ export const VerifyToken = (token) => {
       jwt.verify(token, `${SECRET_KEY}`, async (err, decode) => {
         if (err) return reject(err);
         const user = Models.User.findOne({ _id: decode._id });
+        console.log(user);
         resovle(user);
       });
     } catch (error) {
