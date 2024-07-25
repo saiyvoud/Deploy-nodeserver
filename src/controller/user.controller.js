@@ -27,8 +27,8 @@ export default class UserController {
       if (validate.length > 0) {
         return SendError400(res, EMessage.Please_input + validate.join(","));
       }
-      const { token, refreshToken } = req.body;
-      const data = await VerifyRefreshToken(token, refreshToken);
+      const {  refreshToken } = req.body;
+      const data = await VerifyRefreshToken( refreshToken);
       if (!data) {
         return SendError400(res, "Error RefreshToken");
       }

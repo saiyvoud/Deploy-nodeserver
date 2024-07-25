@@ -9,12 +9,12 @@ export const VerifyRefreshToken = (token, refreshToken) => {
         if (err) return reject(err);
         console.log(`decode===>${decode.token}`);
         console.log(`token===>${token}`);
-        if (decode.token == token) {
+      //  if (decode.token == token) {
           const newToken = await GenerateToken(decode);
           resolve(newToken);
-        } else {
-          reject("Invalid RefreshToken");
-        }
+        // } else {
+        //   reject("Invalid RefreshToken");
+        // }
       });
     } catch (error) {
       reject(error);

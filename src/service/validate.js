@@ -38,6 +38,6 @@ export const ValidateUser = (user) => {
   return ValidateData({ firstName, lastName, profile });
 };
 export const ValidateRefreshToken = (user) => {
-  const { token, refreshToken } = user;
-  return ValidateData({ token, refreshToken });
+  const { refreshToken } = user;
+  return ValidateData({  refreshToken });
 };
