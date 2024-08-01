@@ -11,8 +11,8 @@ export const auth = async (req, res, next) => {
     const token = authorized.replace("Bearer ", "");
     if (!token) return SendError400(res, EMessage.NotFoundToken);
     const user = await VerifyToken(token);
-    const id = JSON.stringify(user._id);
-    req.user = id;
+    // const id = JSON.stringify(user._id);
+    req.user = user._id;
     next();
   } catch (error) {
     console.log(error);

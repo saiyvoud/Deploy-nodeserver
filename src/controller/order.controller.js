@@ -17,14 +17,15 @@ export default class OrderController {
       const { products, addressId, totalPrice } = req.body;
       const user = req.user;
       const validate = ValidateData({
-        products,
         addressId,
         totalPrice,
       });
       if (validate.length > 0) {
         return SendError400(res, EMessage.Please_input + validate.join(","));
       }
-
+      
+    
+      
       if (!mongoose.Types.ObjectId.isValid(addressId)) {
         return SendError401(res, "Not Found addressID");
       }
@@ -32,10 +33,12 @@ export default class OrderController {
       if (!billQR) return SendError400(res, "billQR is required!");
       const image_url = await UploadImageFormData(billQR.billQR.data);
       if (!image_url) return SendError400(res, "Error Upload billQR");
-      console.log(products);
+     
+       const data = JSON.parse(products);
+       console.log(data);
       const order = await Models.Order.create({
         userId: user,
-        products: products,
+        products: data,
         addressId,
         totalPrice,
         billQR: image_url,
