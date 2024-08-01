@@ -37,9 +37,9 @@ router.put(`${vehicle}/update/:id`, VehicleController.updateVehicle);
 router.put(`${vehicle}/delete/:id`, VehicleController.deleteVehicle);
 //-------------- product ------------
 const product = "/product";
-router.post(`${product}/insert`, ProductController.insert);
+router.post(`${product}/insert`, auth, ProductController.insert);
 router.get(`${product}/getOne/:id`, ProductController.getProductOne);
-router.get(`${product}/getAll`, ProductController.getProductAll);
+router.get(`${product}/getAll`,auth, ProductController.getProductAll);
 router.get(`${product}/getByCategory/:category_id`, ProductController.getProductByCategory);
 router.put(`${product}/update/:id`, ProductController.updateProduct);
 router.put(`${product}/delete/:id`, ProductController.deleteProduct);

@@ -9,9 +9,13 @@ const orderSchema = mongoose.Schema(
     },
     products: [
       {
-        productId: mongoose.Types.ObjectId,
+        productId: {
+         type: mongoose.Types.ObjectId,
+         ref: 'product'
+        },
+        
         amount: Number,
-        total: Number,
+        total: Number
       },
     ],
     addressId: {
@@ -26,12 +30,11 @@ const orderSchema = mongoose.Schema(
     billQR: {
       type: String,
       default: "",
-
     },
     status: {
       type: String,
       values: Object.values(Status),
-      default: Status.await,
+      default: Status.success,
     },
     is_Active: {
       type: Boolean,

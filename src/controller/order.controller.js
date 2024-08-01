@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import UploadImageFormData from "../config/cloudinarys.js";
 import { Models } from "../model/index.js";
 import { EMessage, Status } from "../service/message.js";
 import {
@@ -8,46 +9,38 @@ import {
   SendSuccess,
 } from "../service/response.js";
 import { CheckPric } from "../service/service.js";
-import { ValidateOrder } from "../service/validate.js";
+import { ValidateData, ValidateOrder } from "../service/validate.js";
 
 export default class OrderController {
   static async insert(req, res) {
     try {
-      const { userId, partsId, addressId, startTime, priceTotal } = req.body;
-      const validate = ValidateOrder(req.body);
+      const { products, addressId, totalPrice } = req.body;
+      const user = req.user;
+      const validate = ValidateData({
+        products,
+        addressId,
+        totalPrice,
+      });
       if (validate.length > 0) {
         return SendError400(res, EMessage.Please_input + validate.join(","));
       }
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        return SendError401(res, "Not Found UserId");
-      }
-      const user = Models.User.findById(userId);
-      if (!mongoose.Types.ObjectId.isValid(partsId)) {
-        return SendError401(res, "Not Found PartsId");
-      }
-      const parts = await Models.Parts.findById(partsId);
-      if (!mongoose.Types.ObjectId.isValid(addressId)) {
-        return SendError401(res, "Not Found AddressId");
-      }
-        const isMatch = await CheckPric(parts.price, priceTotal);
-        if(!isMatch){
-          SendError400(res, "Not Match Price");
-        }
-      const address = await Models.Address.findById(addressId);
 
+      if (!mongoose.Types.ObjectId.isValid(addressId)) {
+        return SendError401(res, "Not Found addressID");
+      }
+      const billQR = req.files;
+      if (!billQR) return SendError400(res, "billQR is required!");
+      const image_url = await UploadImageFormData(billQR.billQR.data);
+      if (!image_url) return SendError400(res, "Error Upload billQR");
+      console.log(products);
       const order = await Models.Order.create({
-        userId,
-        partsId,
+        userId: user,
+        products: products,
         addressId,
-        priceTotal,
-        startTime,
+        totalPrice,
+        billQR: image_url,
       });
-      //   const newOject = Object.assign(
-      //     JSON.parse(JSON.stringify(order)),
-      //     JSON.parse(JSON.stringify(user)),
-      //     JSON.parse(JSON.stringify(parts)),
-      //     JSON.parse(JSON.stringify(address)),
-      //   );
+
       return SendSuccess(res, "Insert Order Successful", order);
     } catch (error) {
       console.log(error);
