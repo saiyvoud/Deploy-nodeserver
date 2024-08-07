@@ -85,7 +85,7 @@ export default class OrderController {
       }).populate({
         path: "userId addressId",
         select:
-          "fisrtName lastName phoneNumber profile village district province products" ,
+          "firstName lastName phoneNumber profile village district province products" ,
       });
       return SendSuccess(res, "Get Order Status Await Successful", order);
     } catch (error) {
@@ -106,7 +106,7 @@ export default class OrderController {
       }).populate({
         path: "userId addressId",
         select:
-          "fisrtName lastName phoneNumber profile village district province products",
+          "firstName lastName phoneNumber profile village district province products",
       });
       return SendSuccess(res, "Get Order Status Padding Successful", order);
     } catch (error) {
@@ -127,7 +127,7 @@ export default class OrderController {
       }).populate({
         path: "userId addressId",
         select:
-          "fisrtName lastName phoneNumber profile village district province products",
+          "firstName lastName phoneNumber profile village district province products",
       });
       return SendSuccess(res, "Get Order Status Success", order);
     } catch (error) {
@@ -148,7 +148,7 @@ export default class OrderController {
       }).populate({
         path: "userId addressId partsId",
         select:
-          "fisrtName lastName phoneNumber profile village district province name detail amount price image ",
+          "firstName lastName phoneNumber profile village district province name detail amount price image ",
       });
       return SendSuccess(res, "Get Order Status Cancel Successful", order);
     } catch (error) {
