@@ -83,9 +83,9 @@ export default class OrderController {
         is_Active: true,
         status: Status.await,
       }).populate({
-        path: "userId addressId partsId",
+        path: "userId addressId",
         select:
-          "fisrtName lastName phoneNumber profile village district province name detail amount price image ",
+          "fisrtName lastName phoneNumber profile village district province products" ,
       });
       return SendSuccess(res, "Get Order Status Await Successful", order);
     } catch (error) {
@@ -104,9 +104,9 @@ export default class OrderController {
         userId: userId,
         status: Status.padding,
       }).populate({
-        path: "userId addressId partsId",
+        path: "userId addressId",
         select:
-          "fisrtName lastName phoneNumber profile village district province name detail amount price image ",
+          "fisrtName lastName phoneNumber profile village district province products",
       });
       return SendSuccess(res, "Get Order Status Padding Successful", order);
     } catch (error) {
@@ -125,9 +125,9 @@ export default class OrderController {
         userId: userId,
         status: Status.success,
       }).populate({
-        path: "userId addressId partsId",
+        path: "userId addressId",
         select:
-          "fisrtName lastName phoneNumber profile village district province name detail amount price image ",
+          "fisrtName lastName phoneNumber profile village district province products",
       });
       return SendSuccess(res, "Get Order Status Success", order);
     } catch (error) {
